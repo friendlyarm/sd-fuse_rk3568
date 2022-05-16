@@ -1,5 +1,5 @@
 # sd-fuse_rk3568
-Create bootable SD card for NanoPi-R2S/NanoPi-NEO3
+Create bootable SD card for NanoPi-R5S
 
 ## How to find the /dev name of my SD Card
 Unplug all usb devices:
