@@ -27,7 +27,7 @@ BOARD=rk3568/images-for-eflasher
 TARGET_OS=${1,,}
 ROMFILE=`./tools/get_pkg_filename.sh ${TARGET_OS}`
 if [ -z ${ROMFILE} ]; then
-	echo "Usage: $0 <friendlycore-focal-arm64|friendlywrt|eflasher>"
+	echo "Usage: $0 <friendlycore-focal-arm64|friendlywrt|friendlywrt-docker|eflasher>"
 	exit 1
 fi
 

@@ -24,6 +24,9 @@ tar xzf friendlycore-focal-arm64-images.tgz
 wget http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/friendlywrt-images.tgz
 tar xzf friendlywrt-images.tgz
 
+wget http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/friendlywrt-docker-images.tgz
+tar xzf friendlywrt-docker-images.tgz
+
 wget http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/emmc-flasher-images.tgz
 tar xzf emmc-flasher-images.tgz
 
@@ -33,6 +36,9 @@ tar xzf emmc-flasher-images.tgz
 
 ./mk-sd-image.sh friendlywrt
 ./mk-emmc-image.sh friendlywrt
+
+./mk-sd-image.sh friendlywrt-docker
+./mk-emmc-image.sh friendlywrt-docker
 
 ./mk-emmc-image.sh friendlycore-focal-arm64 filename=friendlycore-lite-focal-auto-eflasher.img autostart=yes
 

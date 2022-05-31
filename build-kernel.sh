@@ -27,7 +27,7 @@ true ${MK_HEADERS_DEB:=0}
 true ${BUILD_THIRD_PARTY_DRIVER:=1}
 
 KERNEL_REPO=https://github.com/friendlyarm/kernel-rockchip
-KERNEL_BRANCH=nanopi5-v5.10.y_S
+KERNEL_BRANCH=nanopi5-v5.10.y_opt
 
 declare -a KERNEL_3RD_DRIVERS=("https://github.com/friendlyarm/rtl8821CU" "https://github.com/friendlyarm/rtl8822bu")
 declare -a KERNEL_3RD_DRIVER_BRANCHES=("nanopi-r2" "nanopi-r2")
@@ -64,7 +64,7 @@ KMODULES_OUTDIR="${OUT}/output_${SOC}_kmodules"
 true ${KERNEL_SRC:=${OUT}/kernel-${SOC}}
 
 function usage() {
-       echo "Usage: $0 <friendlycore-focal-arm64|friendlywrt|eflasher>"
+       echo "Usage: $0 <friendlycore-focal-arm64|friendlywrt|friendlywrt-docker|eflasher>"
        echo "# example:"
        echo "# clone kernel source from github:"
        echo "    git clone ${KERNEL_REPO} --depth 1 -b ${KERNEL_BRANCH} ${KERNEL_SRC}"
@@ -93,7 +93,7 @@ true ${TARGET_OS:=${1,,}}
 
 
 case ${TARGET_OS} in
-friendlycore-focal-arm64 | friendlywrt | eflasher )
+friendlycore-focal-arm64 | friendlywrt* | eflasher )
         ;;
 *)
         echo "Error: Unsupported target OS: ${TARGET_OS}"

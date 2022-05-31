@@ -38,6 +38,8 @@ friendlycore-focal-arm64)
         RAW_FILE=${SOC}-eflasher-friendlycore-lite-focal-5.10-arm64-$(date +%Y%m%d).img ;;
 friendlywrt)
         RAW_FILE=${SOC}-eflasher-friendlywrt-5.10-$(date +%Y%m%d).img ;;
+friendlywrt-docker)
+        RAW_FILE=${SOC}-eflasher-friendlywrt-docker-5.10-$(date +%Y%m%d).img ;;
 *)
         RAW_FILE=${SOC}-eflasher-${TARGET_OS}-$(date +%Y%m%d).img ;;
 esac
