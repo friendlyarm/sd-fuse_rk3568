@@ -18,7 +18,7 @@ set -eu
 # along with this program; if not, you can access it online at
 # http://www.gnu.org/licenses/gpl-2.0.html.
 function usage() {
-       echo "Usage: $0 <friendlycore-focal-arm64|friendlywrt|friendlywrt-docker|eflasher>"
+       echo "Usage: $0 <friendlycore-focal-arm64|friendlywrt|friendlywrt-docker|friendlywrt21|friendlywrt21-docker|eflasher>"
        exit 0
 }
 
@@ -62,6 +62,12 @@ else
 		;;
 	friendlywrt-docker)
 		RAW_FILE=${SOC}-sd-friendlywrt-docker-5.10-arm64-$(date +%Y%m%d).img
+		;;
+	friendlywrt21)
+		RAW_FILE=${SOC}-sd-friendlywrt21-5.10-arm64-$(date +%Y%m%d).img
+		;;
+	friendlywrt21-docker)
+		RAW_FILE=${SOC}-sd-friendlywrt21-docker-5.10-arm64-$(date +%Y%m%d).img
 		;;
 	eflasher)
 		RAW_FILE=${SOC}-eflasher-$(date +%Y%m%d).img

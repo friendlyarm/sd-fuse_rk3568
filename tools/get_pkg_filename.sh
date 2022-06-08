@@ -6,6 +6,10 @@ friendlywrt)
         ROMFILE=friendlywrt-images.tgz;;
 friendlywrt-docker)
         ROMFILE=friendlywrt-docker-images.tgz;;
+friendlywrt21)
+        ROMFILE=friendlywrt21-images.tgz;;
+friendlywrt21-docker)
+        ROMFILE=friendlywrt21-docker-images.tgz;;
 friendlycore-focal-arm64)
         ROMFILE=friendlycore-focal-arm64-images.tgz;;
 eflasher)

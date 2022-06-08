@@ -40,6 +40,9 @@ tar xzf emmc-flasher-images.tgz
 ./mk-sd-image.sh friendlywrt-docker
 ./mk-emmc-image.sh friendlywrt-docker
 
+./mk-sd-image.sh friendlywrt21-docker
+./mk-emmc-image.sh friendlywrt21-docker
+
 ./mk-emmc-image.sh friendlycore-focal-arm64 filename=friendlycore-lite-focal-auto-eflasher.img autostart=yes
 
 echo "done."

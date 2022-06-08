@@ -64,7 +64,7 @@ KMODULES_OUTDIR="${OUT}/output_${SOC}_kmodules"
 true ${KERNEL_SRC:=${OUT}/kernel-${SOC}}
 
 function usage() {
-       echo "Usage: $0 <friendlycore-focal-arm64|friendlywrt|friendlywrt-docker|eflasher>"
+       echo "Usage: $0 <friendlycore-focal-arm64|friendlywrt|friendlywrt-docker|friendlywrt21|friendlywrt21-docker|friendlywrt21|friendlywrt21-docker|eflasher>"
        echo "# example:"
        echo "# clone kernel source from github:"
        echo "    git clone ${KERNEL_REPO} --depth 1 -b ${KERNEL_BRANCH} ${KERNEL_SRC}"

@@ -40,6 +40,10 @@ friendlywrt)
         RAW_FILE=${SOC}-eflasher-friendlywrt-5.10-$(date +%Y%m%d).img ;;
 friendlywrt-docker)
         RAW_FILE=${SOC}-eflasher-friendlywrt-docker-5.10-$(date +%Y%m%d).img ;;
+friendlywrt21)
+        RAW_FILE=${SOC}-eflasher-friendlywrt21-5.10-$(date +%Y%m%d).img ;;
+friendlywrt21-docker)
+        RAW_FILE=${SOC}-eflasher-friendlywrt21-docker-5.10-$(date +%Y%m%d).img ;;
 *)
         RAW_FILE=${SOC}-eflasher-${TARGET_OS}-$(date +%Y%m%d).img ;;
 esac
