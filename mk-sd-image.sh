@@ -1,8 +1,8 @@
 #!/bin/bash
 set -eu
 
-# Copyright (C) Guangzhou FriendlyARM Computer Tech. Co., Ltd.
-# (http://www.friendlyarm.com)
+# Copyright (C) Guangzhou FriendlyElec Computer Tech. Co., Ltd.
+# (http://www.friendlyelec.com)
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@ set -eu
 # along with this program; if not, you can access it online at
 # http://www.gnu.org/licenses/gpl-2.0.html.
 function usage() {
-       echo "Usage: $0 <friendlycore-focal-arm64|friendlywrt|friendlywrt-docker|friendlywrt21|friendlywrt21-docker|eflasher>"
+       echo "Usage: $0 <friendlycore-focal-arm64|friendlywrt22|friendlywrt22-docker|friendlywrt21|friendlywrt21-docker|eflasher>"
        exit 0
 }
 
@@ -57,17 +57,17 @@ else
 	friendlycore-focal-arm64)
 		RAW_FILE=${SOC}-sd-friendlycore-lite-focal-5.10-arm64-$(date +%Y%m%d).img
 		;;
-	friendlywrt)
-		RAW_FILE=${SOC}-sd-friendlywrt-5.10-arm64-$(date +%Y%m%d).img
+	friendlywrt22)
+		RAW_FILE=${SOC}-sd-friendlywrt-22.03-arm64-$(date +%Y%m%d).img
 		;;
-	friendlywrt-docker)
-		RAW_FILE=${SOC}-sd-friendlywrt-docker-5.10-arm64-$(date +%Y%m%d).img
+	friendlywrt22-docker)
+		RAW_FILE=${SOC}-sd-friendlywrt-22.03-docker-arm64-$(date +%Y%m%d).img
 		;;
 	friendlywrt21)
-		RAW_FILE=${SOC}-sd-friendlywrt21-5.10-arm64-$(date +%Y%m%d).img
+		RAW_FILE=${SOC}-sd-friendlywrt-21.02-arm64-$(date +%Y%m%d).img
 		;;
 	friendlywrt21-docker)
-		RAW_FILE=${SOC}-sd-friendlywrt21-docker-5.10-arm64-$(date +%Y%m%d).img
+		RAW_FILE=${SOC}-sd-friendlywrt-21.02-docker-5.10-arm64-$(date +%Y%m%d).img
 		;;
 	eflasher)
 		RAW_FILE=${SOC}-eflasher-$(date +%Y%m%d).img
