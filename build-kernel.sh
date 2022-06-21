@@ -25,6 +25,7 @@ true ${LOGO:=}
 true ${KERNEL_LOGO:=}
 true ${MK_HEADERS_DEB:=0}
 true ${BUILD_THIRD_PARTY_DRIVER:=1}
+true ${KCFG:=nanopi5_linux_defconfig}
 
 KERNEL_REPO=https://github.com/friendlyarm/kernel-rockchip
 KERNEL_BRANCH=nanopi5-v5.10.y_opt
@@ -39,7 +40,6 @@ declare -a KERNEL_3RD_DRIVER_NAME=("rtl8821CU" "rtl8822bu" "rtl8812au")
 # "rtl8812au"
 
 ARCH=arm64
-KCFG=nanopi5_linux_defconfig
 KIMG=kernel.img
 KDTB=resource.img
 KALL=nanopi5-images
