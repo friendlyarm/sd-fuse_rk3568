@@ -4,8 +4,8 @@ set -eu
 if [ $# -lt 2 ]; then
 	echo "Usage: $0 <rootfs dir> <img filename> "
     echo "example:"
-    echo "    tar xvzf NETDISK/rk3568/rootfs/rootfs-friendlycore-focal-arm64-20190603.tgz"
-    echo "    ./build-rootfs-img.sh friendlycore-focal-arm64/rootfs friendlycore-focal-arm64"
+    echo "    tar xvzf NETDISK/rk3568/rootfs/rootfs-debian-buster-desktop-arm64-20190603.tgz"
+    echo "    ./build-rootfs-img.sh debian-buster-desktop-arm64/rootfs debian-buster-desktop-arm64"
 	exit 0
 fi
 
@@ -31,11 +31,15 @@ if echo ${TARGET_OS} | grep friendlywrt -i >/dev/null; then
     # set default uid/gid to 0
     MKFS_OPTS="-0 ${MKFS_OPTS}"
 fi
+
+# clean device file
+(cd ${ROOTFS_DIR}/dev && find . ! -type d -exec rm {} \;)
+
 if [ ${IMG_SIZE} -eq 0 ]; then
     # calc image size
     ROOTFS_SIZE=`du -s -B 1 ${ROOTFS_DIR} | cut -f1`
     # +1024m + 10% rootfs size
-    MAX_IMG_SIZE=$((${ROOTFS_SIZE} + 1024*1024*1024 + ${ROOTFS_SIZE}/10))
+    MAX_IMG_SIZE=$((${ROOTFS_SIZE} + 1024*1024*1024 + ${ROOTFS_SIZE}/5))
     TMPFILE=`tempfile`
     ${MKFS} -s -l ${MAX_IMG_SIZE} -a root -L rootfs /dev/null ${ROOTFS_DIR} > ${TMPFILE}
     IMG_SIZE=`cat ${TMPFILE} | grep "Suggest size:" | cut -f2 -d ':' | awk '{gsub(/^\s+|\s+$/, "");print}'`

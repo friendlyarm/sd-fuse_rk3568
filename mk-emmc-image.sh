@@ -19,11 +19,11 @@ set -eu
 # http://www.gnu.org/licenses/gpl-2.0.html.
 
 function usage() {
-       echo "Usage: $0 <friendlywr,friendlycore-focal-arm64> [img filename] [options]"
+       echo "Usage: $0 <friendlywrt22|friendlywrt22-docker|friendlywrt21|friendlywrt21-docker|friendlycore-focal-arm64|debian-buster-desktop-arm64> [img filename] [options]"
        echo "    examples:"
-       echo "        ./mk-emmc-image.sh friendlycore-focal-arm64 filename=myimg-emmc.img autostart=yes"
-       echo "        ./mk-emmc-image.sh friendlycore-focal-arm64 autostart=yes"
-       echo "        ./mk-emmc-image.sh friendlycore-focal-arm64"
+       echo "        ./mk-emmc-image.sh debian-buster-desktop-arm64 filename=myimg-emmc.img autostart=yes"
+       echo "        ./mk-emmc-image.sh debian-buster-desktop-arm64 autostart=yes"
+       echo "        ./mk-emmc-image.sh debian-buster-desktop-arm64"
        exit 0
 }
 
@@ -38,7 +38,7 @@ true ${SOC:=rk3568}
 true ${TARGET_OS:=${1,,}}
 
 case ${TARGET_OS} in
-friendlycore-focal-arm64 | friendlywrt*)
+friendlycore-focal-arm64 | debian-buster-* | friendlywrt*)
         ;;
 *)
         echo "Error: Unsupported target OS: ${TARGET_OS}"

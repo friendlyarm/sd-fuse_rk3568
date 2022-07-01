@@ -40,6 +40,9 @@ tar xzf emmc-flasher-images.tgz
 ./mk-sd-image.sh friendlycore-focal-arm64
 ./mk-emmc-image.sh friendlycore-focal-arm64
 
+./mk-sd-image.sh debian-buster-desktop-arm64
+./mk-emmc-image.sh debian-buster-desktop-arm64
+
 ./mk-sd-image.sh friendlywrt22
 ./mk-emmc-image.sh friendlywrt22
 

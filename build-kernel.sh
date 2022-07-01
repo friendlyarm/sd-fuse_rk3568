@@ -21,6 +21,7 @@ set -eu
 
 true ${SOC:=rk3568}
 true ${DISABLE_MKIMG:=0}
+true ${DISABLE_BUILDKERNEL:=0}
 true ${LOGO:=}
 true ${KERNEL_LOGO:=}
 true ${MK_HEADERS_DEB:=0}
@@ -29,21 +30,40 @@ true ${KCFG:=nanopi5_linux_defconfig}
 
 KERNEL_REPO=https://github.com/friendlyarm/kernel-rockchip
 KERNEL_BRANCH=nanopi5-v5.10.y_opt
-
-declare -a KERNEL_3RD_DRIVERS=("https://github.com/friendlyarm/rtl8821CU" "https://github.com/friendlyarm/rtl8822bu" "https://github.com/friendlyarm/rtl8812au")
-declare -a KERNEL_3RD_DRIVER_BRANCHES=("nanopi-r2" "nanopi-r2" "nanopi-r2")
-declare -a KERNEL_3RD_DRIVER_NAME=("rtl8821CU" "rtl8822bu" "rtl8812au")
-
-# Failed to build
-# "https://github.com/friendlyarm/rtl8812au"
-# "nanopi-r2"
-# "rtl8812au"
-
 ARCH=arm64
 KIMG=kernel.img
 KDTB=resource.img
 KALL=nanopi5-images
 CROSS_COMPILE=aarch64-linux-gnu-
+export PATH=/opt/FriendlyARM/toolchain/6.4-aarch64/bin/:$PATH
+
+declare -a KERNEL_3RD_DRIVERS=("https://github.com/friendlyarm/rtl8821CU" "https://github.com/friendlyarm/rtl8822bu" "https://github.com/friendlyarm/rtl8812au")
+declare -a KERNEL_3RD_DRIVER_BRANCHES=("nanopi-r2" "nanopi-r2" "nanopi-r2")
+declare -a KERNEL_3RD_DRIVER_NAME=("rtl8821CU" "rtl8822bu" "rtl8812au")
+build_external_module() {
+    DRIVER_REPO=$1
+    DRIVER_BRANCHE=$2
+    DRIVER_NAME=$3
+
+    (cd ${OUT} && {
+        if [ ! -d ${DRIVER_NAME} ]; then
+            git clone ${DRIVER_REPO} -b ${DRIVER_BRANCHE} ${DRIVER_NAME}
+        else
+            (cd ${DRIVER_NAME} && {
+                make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} KSRC=${KERNEL_SRC} CONFIG_VENDOR_FRIENDLYARM=y clean
+            })
+        fi
+        (cd ${DRIVER_NAME} && {
+            make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} KSRC=${KERNEL_SRC} CONFIG_VENDOR_FRIENDLYARM=y -j$(nproc)
+            if [ $? -ne 0 ]; then
+                echo "failed to build 3rd kernel modules: ${DRIVER_NAME}"
+                exit 1
+            fi
+            ${CROSS_COMPILE}strip --strip-unneeded ${DRIVER_NAME}.ko
+            cp ${DRIVER_NAME}.ko ${KMODULES_OUTDIR}/lib/modules/${KERNEL_VER} -afv
+        })
+    })
+}
 
 # 
 # kernel logo:
@@ -64,7 +84,7 @@ KMODULES_OUTDIR="${OUT}/output_${SOC}_kmodules"
 true ${KERNEL_SRC:=${OUT}/kernel-${SOC}}
 
 function usage() {
-       echo "Usage: $0 <friendlycore-focal-arm64|friendlywrt22|friendlywrt22-docker|friendlywrt21|friendlywrt21-docker|eflasher>"
+       echo "Usage: $0 <friendlycore-focal-arm64|debian-buster-desktop-arm64|friendlywrt22|friendlywrt22-docker|friendlywrt21|friendlywrt21-docker|eflasher>"
        echo "# example:"
        echo "# clone kernel source from github:"
        echo "    git clone ${KERNEL_REPO} --depth 1 -b ${KERNEL_BRANCH} ${KERNEL_SRC}"
@@ -74,12 +94,12 @@ function usage() {
        echo "    convert files/logo.jpg -type truecolor /tmp/logo.bmp"
        echo "    convert files/logo.jpg -type truecolor /tmp/logo_kernel.bmp"
        echo "    LOGO=/tmp/logo.bmp KERNEL_LOGO=/tmp/logo_kernel.bmp ./build-kernel.sh eflasher"
-       echo "    LOGO=/tmp/logo.bmp KERNEL_LOGO=/tmp/logo_kernel.bmp ./build-kernel.sh friendlycore-focal-arm64"
-       echo "    ./mk-emmc-image.sh friendlycore-focal-arm64"
+       echo "    LOGO=/tmp/logo.bmp KERNEL_LOGO=/tmp/logo_kernel.bmp ./build-kernel.sh debian-buster-desktop-arm64"
+       echo "    ./mk-emmc-image.sh debian-buster-desktop-arm64"
        echo "# also can do:"
-       echo "    KERNEL_SRC=~/mykernel ./build-kernel.sh friendlycore-focal-arm64"
+       echo "    KERNEL_SRC=~/mykernel ./build-kernel.sh debian-buster-desktop-arm64"
        echo "# other options, build kernel-headers, enable/disable 3rd drivers:"
-       echo "    MK_HEADERS_DEB=1 BUILD_THIRD_PARTY_DRIVER=0 ./build-kernel.sh friendlycore-focal-arm64"
+       echo "    MK_HEADERS_DEB=1 BUILD_THIRD_PARTY_DRIVER=0 ./build-kernel.sh debian-buster-desktop-arm64"
        exit 0
 }
 
@@ -93,7 +113,7 @@ true ${TARGET_OS:=${1,,}}
 
 
 case ${TARGET_OS} in
-friendlycore-focal-arm64 | friendlywrt* | eflasher )
+friendlycore-focal-arm64 | debian-buster-* | friendlywrt* | eflasher )
         ;;
 *)
         echo "Error: Unsupported target OS: ${TARGET_OS}"
@@ -159,134 +179,117 @@ else
         echo "using official kernel logo."
 fi
 
-export PATH=/opt/FriendlyARM/toolchain/6.4-aarch64/bin/:$PATH
-
-cd ${KERNEL_SRC}
-git clean -dxf
-touch .scmversion
-make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} ${KCFG}
-if [ $? -ne 0 ]; then
-	echo "failed to build kernel."
-	exit 1
-fi
-if [ x"${TARGET_OS}" = x"eflasher" ]; then
-    cp -avf .config .config.old
-    sed -i "s/.*\(PROT_MT_SYNC\).*/CONFIG_TOUCHSCREEN_\1=y/g" .config
-    sed -i "s/\(.*PROT_MT_SLOT\).*/# \1 is not set/g" .config
-fi
-
-make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} ${KALL} -j$(nproc)
-if [ $? -ne 0 ]; then
+function build_kernel() {
+    cd ${KERNEL_SRC}
+    git clean -dxf
+    touch .scmversion
+    make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} ${KCFG}
+    if [ $? -ne 0 ]; then
         echo "failed to build kernel."
         exit 1
-fi
+    fi
+    if [ x"${TARGET_OS}" = x"eflasher" ]; then
+        cp -avf .config .config.old
+        sed -i "s/.*\(PROT_MT_SYNC\).*/CONFIG_TOUCHSCREEN_\1=y/g" .config
+        sed -i "s/\(.*PROT_MT_SLOT\).*/# \1 is not set/g" .config
+    fi
 
-rm -rf ${KMODULES_OUTDIR}
-mkdir -p ${KMODULES_OUTDIR}
-make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} INSTALL_MOD_PATH=${KMODULES_OUTDIR} modules -j$(nproc)
-if [ $? -ne 0 ]; then
-	echo "failed to build kernel modules."
-        exit 1
-fi
-make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} INSTALL_MOD_PATH=${KMODULES_OUTDIR} modules_install INSTALL_MOD_STRIP=1
-if [ $? -ne 0 ]; then
-	echo "failed to build kernel modules."
-        exit 1
-fi
-
-KERNEL_VER=`make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} kernelrelease`
-
-build_external_module() {
-    DRIVER_REPO=$1
-    DRIVER_BRANCHE=$2
-    DRIVER_NAME=$3
-
-    (cd ${OUT} && {
-        if [ ! -d ${DRIVER_NAME} ]; then
-            git clone ${DRIVER_REPO} -b ${DRIVER_BRANCHE} ${DRIVER_NAME}
-        else
-            (cd ${DRIVER_NAME} && {
-                make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} KSRC=${KERNEL_SRC} CONFIG_VENDOR_FRIENDLYARM=y clean
-            })
-        fi
-        (cd ${DRIVER_NAME} && {
-            make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} KSRC=${KERNEL_SRC} CONFIG_VENDOR_FRIENDLYARM=y -j$(nproc)
-            if [ $? -ne 0 ]; then
-                echo "failed to build 3rd kernel modules: ${DRIVER_NAME}"
-                exit 1
-            fi
-            ${CROSS_COMPILE}strip --strip-unneeded ${DRIVER_NAME}.ko
-            cp ${DRIVER_NAME}.ko ${KMODULES_OUTDIR}/lib/modules/${KERNEL_VER} -afv
-        })
-    })
-}
-
-# build r8125 driver
-export ETHTOOL_LEGACY_2500baseX=y
-build_external_module "https://github.com/friendlyarm/r8125" "main" "r8125"
-unset ETHTOOL_LEGACY_2500baseX
-
-# build 3rd driver
-if [ ${BUILD_THIRD_PARTY_DRIVER} -eq 1 ]; then
-    for (( i=0; i<${#KERNEL_3RD_DRIVERS[@]}; i++ ));
-    do
-        build_external_module ${KERNEL_3RD_DRIVERS[$i]} ${KERNEL_3RD_DRIVER_BRANCHES[$i]} ${KERNEL_3RD_DRIVER_NAME[$i]}
-    done
-fi
-
-if [ ! -d ${KMODULES_OUTDIR}/lib ]; then
-	echo "not found kernel modules."
-	exit 1
-fi
-
-if [ ${MK_HEADERS_DEB} -eq 1 ]; then
-	KERNEL_HEADERS_DEB=${OUT}/linux-headers-${KERNEL_VER}.deb
-	rm -f ${KERNEL_HEADERS_DEB}
-    make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} bindeb-pkg
+    make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} ${KALL} -j$(nproc)
     if [ $? -ne 0 ]; then
-        echo "failed to build kernel header."
+            echo "failed to build kernel."
+            exit 1
+    fi
+
+    rm -rf ${KMODULES_OUTDIR}
+    mkdir -p ${KMODULES_OUTDIR}
+    make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} INSTALL_MOD_PATH=${KMODULES_OUTDIR} modules -j$(nproc)
+    if [ $? -ne 0 ]; then
+        echo "failed to build kernel modules."
+            exit 1
+    fi
+    make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} INSTALL_MOD_PATH=${KMODULES_OUTDIR} modules_install INSTALL_MOD_STRIP=1
+    if [ $? -ne 0 ]; then
+        echo "failed to build kernel modules."
+            exit 1
+    fi
+    KERNEL_VER=`make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} kernelrelease`
+
+    # build r8125 driver
+    export ETHTOOL_LEGACY_2500baseX=y
+    build_external_module "https://github.com/friendlyarm/r8125" "main" "r8125"
+    unset ETHTOOL_LEGACY_2500baseX
+
+    # build 3rd driver
+    if [ ${BUILD_THIRD_PARTY_DRIVER} -eq 1 ]; then
+        for (( i=0; i<${#KERNEL_3RD_DRIVERS[@]}; i++ ));
+        do
+            build_external_module ${KERNEL_3RD_DRIVERS[$i]} ${KERNEL_3RD_DRIVER_BRANCHES[$i]} ${KERNEL_3RD_DRIVER_NAME[$i]}
+        done
+    fi
+
+    if [ ! -d ${KMODULES_OUTDIR}/lib ]; then
+        echo "not found kernel modules."
         exit 1
     fi
 
-    (cd ${KERNEL_SRC}/debian/linux-headers && {
-        find usr/src/linux-headers*/scripts/ \
-            -name "*.o" -o -name ".*.cmd" | xargs rm -rf
+    (cd ${KMODULES_OUTDIR}/lib/modules/${KERNEL_VER}/ && {
+        rm -rf ./build ./source
+    	echo "depmod ${KMODULES_OUTDIR} ${KERNEL_VER} ..."
+        depmod -a -b ${KMODULES_OUTDIR} ${KERNEL_VER}
+    })
 
-        HEADERS_SCRIPT_DIR=${TOPPATH}/files/linux-headers-5.10-bin_arm64/scripts
-        if [ -d ${HEADERS_SCRIPT_DIR} ]; then
-            cp -avf ${HEADERS_SCRIPT_DIR}/* ./usr/src/linux-headers-*${KERNEL_VER}*/scripts/
-            if [ $? -ne 0 ]; then
-                echo "failed to copy bin file to /usr/src/linux-headers-5.15.y."
-                exit 1
-            fi
-        else
-            echo "not found files/linux-headers-x.y.z-bin_arm64, why?"
+    if [ ${MK_HEADERS_DEB} -eq 1 ]; then
+        KERNEL_HEADERS_DEB=${OUT}/linux-headers-${KERNEL_VER}.deb
+        rm -f ${KERNEL_HEADERS_DEB}
+        make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} bindeb-pkg
+        if [ $? -ne 0 ]; then
+            echo "failed to build kernel header."
             exit 1
         fi
 
-        find . -type f ! -path './DEBIAN/*' -printf '%P\0' | xargs -r0 md5sum > DEBIAN/md5sums
-    })
-    dpkg -b ${KERNEL_SRC}/debian/linux-headers ${KERNEL_HEADERS_DEB}
-    if [ $? -ne 0 ]; then
-        echo "failed to re-make deb package."
-        exit 1
-    fi
+        (cd ${KERNEL_SRC}/debian/linux-headers && {
+            find usr/src/linux-headers*/scripts/ \
+                -name "*.o" -o -name ".*.cmd" | xargs rm -rf
 
-    # clean up
-    (cd $TOPPATH && {
-        rm -f linux-*${KERNEL_VER}*_arm64.buildinfo
-        rm -f linux-*${KERNEL_VER}*_arm64.changes
-        rm -f linux-headers-*${KERNEL_VER}*_arm64.deb
-        rm -f linux-image-*${KERNEL_VER}*_arm64.deb
-        rm -f linux-libc-dev_*${KERNEL_VER}*_arm64.deb
-    })
+            HEADERS_SCRIPT_DIR=${TOPPATH}/files/linux-headers-5.10-bin_arm64/scripts
+            if [ -d ${HEADERS_SCRIPT_DIR} ]; then
+                cp -avf ${HEADERS_SCRIPT_DIR}/* ./usr/src/linux-headers-*${KERNEL_VER}*/scripts/
+                if [ $? -ne 0 ]; then
+                    echo "failed to copy bin file to /usr/src/linux-headers-5.15.y."
+                    exit 1
+                fi
+            else
+                echo "not found files/linux-headers-x.y.z-bin_arm64, why?"
+                exit 1
+            fi
+
+            find . -type f ! -path './DEBIAN/*' -printf '%P\0' | xargs -r0 md5sum > DEBIAN/md5sums
+        })
+        dpkg -b ${KERNEL_SRC}/debian/linux-headers ${KERNEL_HEADERS_DEB}
+        if [ $? -ne 0 ]; then
+            echo "failed to re-make deb package."
+            exit 1
+        fi
+
+        # clean up
+        (cd $TOPPATH && {
+            rm -f linux-*${KERNEL_VER}*_arm64.buildinfo
+            rm -f linux-*${KERNEL_VER}*_arm64.changes
+            rm -f linux-headers-*${KERNEL_VER}*_arm64.deb
+            rm -f linux-image-*${KERNEL_VER}*_arm64.deb
+            rm -f linux-libc-dev_*${KERNEL_VER}*_arm64.deb
+        })
+    fi
+    echo "building kernel ok."
+}
+if [ $DISABLE_BUILDKERNEL -eq 0 ]; then
+    build_kernel
 fi
 
-if [ x"$DISABLE_MKIMG" = x"1" ]; then
+if [ $DISABLE_MKIMG -eq 1 ]; then
     exit 0
 fi
 
-echo "building kernel ok."
 if ! [ -x "$(command -v simg2img)" ]; then
     sudo apt update
     sudo apt install android-tools-fsutils
@@ -295,7 +298,6 @@ fi
 cd ${TOPPATH}
 download_img ${TARGET_OS}
 ./tools/update_kernel_bin_to_img.sh ${OUT} ${KERNEL_SRC} ${TARGET_OS} ${TOPPATH}/prebuilt
-
 
 if [ $? -eq 0 ]; then
     echo "updating kernel ok."
