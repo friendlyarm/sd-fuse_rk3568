@@ -12,7 +12,7 @@ ls -1 /dev > ~/after.txt
 diff ~/before.txt ~/after.txt
 ```
 
-## Build friendlycore bootable SD card
+## Build debian-buster-desktop-arm64 bootable SD card
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3568.git
 cd sd-fuse_rk3568
