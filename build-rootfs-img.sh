@@ -2,7 +2,7 @@
 set -eu
 
 if [ $# -lt 2 ]; then
-	echo "Usage: $0 <rootfs dir> <img filename> "
+	echo "Usage: $0 <rootfs dir> <img dir> "
     echo "example:"
     echo "    tar xvzf NETDISK/rk3568/rootfs/rootfs-debian-buster-desktop-arm64-20190603.tgz"
     echo "    ./build-rootfs-img.sh debian-buster-desktop-arm64/rootfs debian-buster-desktop-arm64"
