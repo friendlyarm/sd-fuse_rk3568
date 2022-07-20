@@ -18,7 +18,7 @@ set -eu
 # along with this program; if not, you can access it online at
 # http://www.gnu.org/licenses/gpl-2.0.html.
 function usage() {
-       echo "Usage: $0 <friendlycore-focal-arm64|debian-buster-desktop-arm64|friendlywrt22|friendlywrt22-docker|friendlywrt21|friendlywrt21-docker|eflasher>"
+       echo "Usage: $0 <buildroot|friendlycore-focal-arm64|debian-buster-desktop-arm64|friendlywrt22|friendlywrt22-docker|friendlywrt21|friendlywrt21-docker|eflasher>"
        exit 0
 }
 
@@ -37,6 +37,8 @@ true ${TARGET_OS:=${1,,}}
 
 RK_PARAMETER_TXT=$(dirname $0)/${TARGET_OS}/parameter.txt
 case ${TARGET_OS} in
+buildroot*)
+    RAW_SIZE_MB=7800 ;;
 friendlycore-focal-arm64)
 	RAW_SIZE_MB=7800 ;;
 debian-buster-desktop-arm64)
@@ -56,6 +58,9 @@ if [ $# -eq 2 ]; then
 	RAW_FILE=$2
 else
 	case ${TARGET_OS} in
+	buildroot*)
+		RAW_FILE=${SOC}-sd-buildroot-5.10-arm64-$(date +%Y%m%d).img
+		;;
 	friendlycore-focal-arm64)
 		RAW_FILE=${SOC}-sd-friendlycore-lite-focal-5.10-arm64-$(date +%Y%m%d).img
 		;;
@@ -78,7 +83,7 @@ else
 		RAW_FILE=${SOC}-eflasher-$(date +%Y%m%d).img
 		;;
 	*)
-		RAW_FILE=${SOC}-${TARGET_OS}-sd4g-$(date +%Y%m%d).img
+		RAW_FILE=${SOC}-${TARGET_OS}-$(date +%Y%m%d).img
 		;;
 	esac
 fi

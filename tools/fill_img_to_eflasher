@@ -33,22 +33,28 @@ OS_IMAGES_DIR=${TOPPATH}/${TARGET_OS}
         exit 1
 }
 
-case ${TARGET_OS} in
-friendlycore-focal-arm64)
-        RAW_FILE=${SOC}-eflasher-friendlycore-lite-focal-5.10-arm64-$(date +%Y%m%d).img ;;
-debian-buster-desktop-arm64)
-        RAW_FILE=${SOC}-eflasher-debian-buster-desktop-5.10-arm64-$(date +%Y%m%d).img ;;
-friendlywrt22)
-        RAW_FILE=${SOC}-eflasher-friendlywrt-22.03-$(date +%Y%m%d).img ;;
-friendlywrt22-docker)
-        RAW_FILE=${SOC}-eflasher-friendlywrt-22.03-docker-$(date +%Y%m%d).img ;;
-friendlywrt21)
-        RAW_FILE=${SOC}-eflasher-friendlywrt-21.02-$(date +%Y%m%d).img ;;
-friendlywrt21-docker)
-        RAW_FILE=${SOC}-eflasher-friendlywrt-21.02-docker-$(date +%Y%m%d).img ;;
-*)
-        RAW_FILE=${SOC}-eflasher-${TARGET_OS}-$(date +%Y%m%d).img ;;
-esac
+if [ $# -eq 4 ]; then
+	RAW_FILE=$4
+else
+	case ${TARGET_OS} in
+	buildroot)
+	        RAW_FILE=${SOC}-eflasher-buildroot-linux-5.10-arm64-$(date +%Y%m%d).img ;;
+	friendlycore-focal-arm64)
+	        RAW_FILE=${SOC}-eflasher-friendlycore-lite-focal-5.10-arm64-$(date +%Y%m%d).img ;;
+	debian-buster-desktop-arm64)
+	        RAW_FILE=${SOC}-eflasher-debian-buster-desktop-5.10-arm64-$(date +%Y%m%d).img ;;
+	friendlywrt22)
+	        RAW_FILE=${SOC}-eflasher-friendlywrt-22.03-$(date +%Y%m%d).img ;;
+	friendlywrt22-docker)
+	        RAW_FILE=${SOC}-eflasher-friendlywrt-22.03-docker-$(date +%Y%m%d).img ;;
+	friendlywrt21)
+	        RAW_FILE=${SOC}-eflasher-friendlywrt-21.02-$(date +%Y%m%d).img ;;
+	friendlywrt21-docker)
+	        RAW_FILE=${SOC}-eflasher-friendlywrt-21.02-docker-$(date +%Y%m%d).img ;;
+	*)
+	        RAW_FILE=${SOC}-eflasher-${TARGET_OS}-$(date +%Y%m%d).img ;;
+	esac
+fi
 
 AUTOSTART=no
 Args=( "$@" )
@@ -70,7 +76,7 @@ gen_eflasher_conf()
     if [ ${3} = "yes" ]; then
         AutoFlashOSName=${2}
     fi
-	OSNamesMergeWithComma="friendlywr21,friendlywr22,friendlycore-focal-arm64,debian-buster-desktop-arm64"
+	OSNamesMergeWithComma="buildroot,friendlywr21,friendlywr22,friendlycore-focal-arm64,debian-buster-desktop-arm64"
 	cat > ${1}/eflasher.conf <<EOL
 ; This is the eFlasher configuration file.
 ; See http://wiki.friendlyarm.com/wiki/index.php/EFlasher for detailed information.

@@ -2,6 +2,8 @@
 
 TARGET_OS=$1
 case ${TARGET_OS} in
+buildroot)
+        ROMFILE=buildroot-images.tgz;;
 friendlywrt22)
         ROMFILE=friendlywrt22-images.tgz;;
 friendlywrt22-docker)
