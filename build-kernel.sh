@@ -263,7 +263,7 @@ function build_kernel() {
 
             find . -type f ! -path './DEBIAN/*' -printf '%P\0' | xargs -r0 md5sum > DEBIAN/md5sums
         })
-        dpkg -b ${KERNEL_SRC}/debian/linux-headers ${KERNEL_HEADERS_DEB}
+        dpkg-deb -Zgzip -b ${KERNEL_SRC}/debian/linux-headers ${KERNEL_HEADERS_DEB}
         if [ $? -ne 0 ]; then
             echo "failed to re-make deb package."
             exit 1
