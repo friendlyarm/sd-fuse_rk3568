@@ -33,4 +33,5 @@ else
 	git clone ${KERNEL_URL} --depth 1 -b ${KERNEL_BRANCH} kernel-rk3568
 fi
 
-MK_HEADERS_DEB=1 BUILD_THIRD_PARTY_DRIVER=0 KERNEL_SRC=$PWD/kernel-rk3568 ./build-kernel.sh debian-buster-desktop-arm64
+BUILD_THIRD_PARTY_DRIVER=0 KERNEL_SRC=$PWD/kernel-rk3568 ./build-kernel.sh debian-buster-desktop-arm64
+sudo ./mk-sd-image.sh debian-buster-desktop-arm64

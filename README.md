@@ -35,7 +35,7 @@ First, download and unpack:
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3568.git
 cd sd-fuse_rk3568
-wget http://112.124.9.243/dvdfiles/RK3568/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
+wget --no-proxy http://112.124.9.243/dvdfiles/RK3568/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
 tar xvzf debian-buster-desktop-arm64-images.tgz
 ```
 Now,  Change something under the debian-buster-desktop-arm64 directory,

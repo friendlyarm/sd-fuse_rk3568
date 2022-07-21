@@ -3,14 +3,14 @@ set -eu
 
 HTTP_SERVER=112.124.9.243
 KERNEL_URL=https://github.com/friendlyarm/kernel-rockchip
-KERNEL_BRANCH=nanopi5-v5.10.y_S
+KERNEL_BRANCH=nanopi5-v5.10.y_opt
 
 # hack for me
 PCNAME=`hostname`
 if [ x"${PCNAME}" = x"tzs-i7pc" ]; then
-	HTTP_SERVER=192.168.1.9
+	HTTP_SERVER=127.0.0.1
 	KERNEL_URL=git@192.168.1.5:/devel/kernel/linux.git
-	KERNEL_BRANCH=nanopi5-v5.10.y_S
+	KERNEL_BRANCH=nanopi5-v5.10.y_opt
 fi
 
 # clean
@@ -23,7 +23,7 @@ cd sd-fuse_rk3568
 if [ -f ../../friendlycore-focal-arm64-images.tgz ]; then
 	tar xvzf ../../friendlycore-focal-arm64-images.tgz
 else
-	wget http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/friendlycore-focal-arm64-images.tgz
+	wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/friendlycore-focal-arm64-images.tgz
     tar xvzf friendlycore-focal-arm64-images.tgz
 fi
 
