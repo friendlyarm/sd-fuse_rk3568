@@ -106,7 +106,7 @@ if [ ! -d ${UBOOT_SRC} ]; then
 fi
 if [ ! -d ${UBOOT_SRC}/../rkbin ]; then
     (cd ${UBOOT_SRC}/../ && {
-        git clone https://github.com/friendlyarm/rkbin -b friendlyelec
+        git clone https://github.com/friendlyarm/rkbin -b nanopi5
     })
 fi
 
