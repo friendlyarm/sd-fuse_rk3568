@@ -27,7 +27,7 @@ So you can download from the netdisk in advance, on netdisk, the images files ar
 ```
 cd sd-fuse_rk3568
 tar xvzf ../images-for-eflasher/debian-buster-desktop-arm64-images.tgz
-./mk-sd-image.sh /dev/sdX debian-buster-desktop-arm64
+sudo ./fusing.sh /dev/sdX debian-buster-desktop-arm64
 ```
 
 ## Build an sd card image
