@@ -217,7 +217,40 @@ function build_kernel() {
     build_external_module "https://github.com/friendlyarm/r8125" "main" "r8125"
     unset ETHTOOL_LEGACY_2500baseX
 
-    # build 3rd driver
+    # build cryptodev-linux
+    (cd ${OUT} && {
+        if [ ! -d cryptodev-linux ]; then
+            git clone https://github.com/cryptodev-linux/cryptodev-linux.git -b master cryptodev-linux
+        fi
+        (cd cryptodev-linux && {
+            make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} KERNEL_DIR=${KERNEL_SRC}
+            cp cryptodev.ko ${KMODULES_OUTDIR}/lib/modules/${KERNEL_VER} -afv
+        })
+    })
+
+    # build nft-fullcone
+    (cd ${OUT} && {
+        if [ ! -d nft-fullcone ]; then
+            git clone https://github.com/fullcone-nat-nftables/nft-fullcone -b master nft-fullcone
+        fi
+        (cd nft-fullcone/src/ && {
+            make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} -C ${KERNEL_SRC} M=$(pwd)
+            cp nft_fullcone.ko ${KMODULES_OUTDIR}/lib/modules/${KERNEL_VER} -afv
+        })
+    })
+
+    # build rtw_8822ce wifi driver
+    (cd ${OUT} && {
+        if [ ! -d rtw88 ]; then
+            git clone https://github.com/lwfinger/rtw88 -b master rtw88
+        fi
+        (cd rtw88/ && {
+            make CROSS_COMPILE=${CROSS_COMPILE} ARCH=${ARCH} -C ${KERNEL_SRC} M=$(pwd)
+            cp *.ko ${KMODULES_OUTDIR}/lib/modules/${KERNEL_VER} -afv
+        })
+    })
+
+    # build usb wifi driver
     if [ ${BUILD_THIRD_PARTY_DRIVER} -eq 1 ]; then
         for (( i=0; i<${#KERNEL_3RD_DRIVERS[@]}; i++ ));
         do
