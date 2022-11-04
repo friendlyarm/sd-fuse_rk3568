@@ -18,7 +18,7 @@ set -eu
 # along with this program; if not, you can access it online at
 # http://www.gnu.org/licenses/gpl-2.0.html.
 function usage() {
-       echo "Usage: $0 <buildroot|friendlycore-focal-arm64|debian-buster-desktop-arm64|friendlywrt22|friendlywrt22-docker|friendlywrt21|friendlywrt21-docker|eflasher>"
+       echo "Usage: $0 <buildroot|friendlycore-focal-arm64|debian-buster-desktop-arm64|debian-bullseye-desktop-arm64|friendlywrt22|friendlywrt22-docker|friendlywrt21|friendlywrt21-docker|eflasher>"
        exit 0
 }
 
@@ -41,7 +41,7 @@ buildroot*)
     RAW_SIZE_MB=7800 ;;
 friendlycore-focal-arm64)
 	RAW_SIZE_MB=7800 ;;
-debian-buster-desktop-arm64)
+debian-*-desktop-arm64)
 	RAW_SIZE_MB=7800 ;;
 friendlywrt*)
 	RAW_SIZE_MB=1000 ;;
@@ -66,6 +66,9 @@ else
 		;;
 	debian-buster-desktop-arm64)
 		RAW_FILE=${SOC}-sd-debian-buster-desktop-5.10-arm64-$(date +%Y%m%d).img
+		;;
+	debian-bullseye-desktop-arm64)
+		RAW_FILE=${SOC}-sd-debian-bullseye-desktop-5.10-arm64-$(date +%Y%m%d).img
 		;;
 	friendlywrt22)
 		RAW_FILE=${SOC}-sd-friendlywrt-22.03-arm64-$(date +%Y%m%d).img

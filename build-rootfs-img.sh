@@ -58,14 +58,14 @@ if [ ${IMG_SIZE} -eq 0 ]; then
     # make fs
     ${MKFS} ${MKFS_OPTS} -l ${IMG_SIZE} ${IMG_FILE} ${ROOTFS_DIR}
     if [ $? -ne 0 ]; then
-            echo "error: failed to  make rootfs.img."
-            exit 1
-     fi
+        echo "error: failed to  make rootfs.img."
+        exit 1
+    fi
 else
     ${MKFS} ${MKFS_OPTS} -l ${IMG_SIZE} ${IMG_FILE} ${ROOTFS_DIR}
     if [ $? -ne 0 ]; then
-            echo "error: failed to  make rootfs.img."
-            exit 1
+        echo "error: failed to  make rootfs.img."
+        exit 1
      fi
 fi
 

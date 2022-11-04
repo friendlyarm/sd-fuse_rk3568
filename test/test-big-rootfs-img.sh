@@ -18,6 +18,7 @@ git clone ../../.git sd-fuse_rk3568
 cd sd-fuse_rk3568
 wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
 tar xzf debian-buster-desktop-arm64-images.tgz
+
 wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/emmc-flasher-images.tgz
 tar xzf emmc-flasher-images.tgz
 
