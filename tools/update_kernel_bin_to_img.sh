@@ -14,7 +14,7 @@ if [ $(id -u) -ne 0 ]; then
 fi
 
 TOP=$PWD
-true ${MKFS:="${TOP}/tools/mke2fs"}
+true ${MKFS:="MKE2FS_CONFIG=${TOP}/tools/mke2fs.conf ${TOP}/tools/mke2fs"}
 
 true ${SOC:=rk3568}
 ARCH=arm64
