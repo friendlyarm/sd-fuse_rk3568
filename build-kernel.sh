@@ -112,10 +112,10 @@ true ${TARGET_OS:=${1,,}}
 
 case ${TARGET_OS} in
 buildroot* | friendlycore-focal-arm64 | debian-* | friendlywrt* | eflasher )
-        ;;
+    ;;
 *)
-        echo "Error: Unsupported target OS: ${TARGET_OS}"
-        exit 1
+    echo "Error: Unsupported target OS: ${TARGET_OS}"
+    exit 1
 esac
 
 download_img() {
