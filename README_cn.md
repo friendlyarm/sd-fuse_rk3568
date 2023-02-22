@@ -24,6 +24,8 @@ sd-fuse 使用不同的git分支来支持不同的内核版本, 当前支持的�
 * buildroot
 * debian-buster-desktop-arm64
 * debian-bullseye-desktop-arm64
+* debian-bullseye-minimal-arm64
+* debian-bullseye-core-arm64
 * friendlycore-focal-arm64
 * friendlywrt22
 * friendlywrt22-docker
@@ -59,7 +61,7 @@ sd-fuse 使用不同的git分支来支持不同的内核版本, 当前支持的�
 *注: 这里以debian-buster系统为例进行说明*  
 下载本仓库到本地, 然后下载并解压debian-buster系统的[分区镜像文件压缩包](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher), 由于http服务器带宽的关系, wget命令可能会比较慢, 推荐从网盘上下载同名的文件:
 ```
-git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master sd-fuse_rk3568-master
+git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master --single-branch sd-fuse_rk3568-master
 cd sd-fuse_rk3568-master
 wget http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
 tar xvzf debian-buster-desktop-arm64-images.tgz
@@ -90,7 +92,7 @@ cp prebuilt/parameter-ext4.txt debian-buster-desktop-arm64/parameter.txt
 *注: 这里以debian-buster系统为例进行说明*  
 下载本仓库到本地, 然后下载并解压[分区镜像文件压缩包](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher), 这里需要下载debian-buster和eflasher系统的文件:
 ```
-git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master sd-fuse_rk3568-master
+git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master --single-branch sd-fuse_rk3568-master
 cd sd-fuse_rk3568-master
 wget http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
 tar xvzf debian-buster-desktop-arm64-images.tgz
@@ -110,7 +112,7 @@ out/rk3568-eflasher-debian-buster-desktop-5.10-arm64-YYYYMMDD.img
 *注: 这里以debian-buster系统为例进行说明*  
 下载本仓库到本地, 然后下载并解压[分区镜像压缩包](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher):
 ```
-git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master sd-fuse_rk3568-master
+git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master --single-branch sd-fuse_rk3568-master
 cd sd-fuse_rk3568-master
 wget http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
 tar xvzf debian-buster-desktop-arm64-images.tgz
@@ -146,7 +148,7 @@ sudo ./build-rootfs-img.sh debian-buster-desktop-arm64/rootfs debian-buster-desk
 *注: 这里以debian-buster系统为例进行说明*  
 下载本仓库到本地, 然后下载并解压[分区镜像压缩包](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher):
 ```
-git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master sd-fuse_rk3568-master
+git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master --single-branch sd-fuse_rk3568-master
 cd sd-fuse_rk3568-master
 wget http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
 tar xvzf debian-buster-desktop-arm64-images.tgz
@@ -186,7 +188,7 @@ MK_HEADERS_DEB=1 ./build-kernel.sh debian-buster-desktop-arm64
 *注: 这里以debian-buster系统为例进行说明* 
 下载本仓库到本地, 然后下载并解压[分区镜像压缩包](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher):
 ```
-git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master sd-fuse_rk3568-master
+git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master --single-branch sd-fuse_rk3568-master
 cd sd-fuse_rk3568-master
 wget http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
 tar xvzf debian-buster-desktop-arm64-images.tgz

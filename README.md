@@ -24,6 +24,8 @@ For other kernel versions, please switch to the related git branch.
 * buildroot
 * debian-buster-desktop-arm64
 * debian-bullseye-desktop-arm64
+* debian-bullseye-minimal-arm64
+* debian-bullseye-core-arm64
 * friendlycore-focal-arm64
 * friendlywrt22
 * friendlywrt22-docker
@@ -59,7 +61,7 @@ If the files are not prepared in advance, the script will automatically download
 *Note: Here we use debian-buster system as an example*  
 Clone this repository locally, then download and uncompress the [pre-built images](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher), due to the bandwidth of the http server, we recommend downloading the file from the [NetDrive](https://download.friendlyelec.com/rk3568):
 ```
-git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master sd-fuse_rk3568-master
+git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master --single-branch sd-fuse_rk3568-master
 cd sd-fuse_rk3568-master
 wget http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
 tar xvzf debian-buster-desktop-arm64-images.tgz
@@ -90,7 +92,7 @@ Disabling overlayfs is useful for exporting rootfs root filesystem.
 *Note: Here we use debian-buster system as an example*  
 Clone this repository locally, then download and uncompress the [pre-built images](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher), here you need to download the debian-buster and eflasher [pre-built images](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher):
 ```
-git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master sd-fuse_rk3568-master
+git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master --single-branch sd-fuse_rk3568-master
 cd sd-fuse_rk3568-master
 wget http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
 tar xvzf debian-buster-desktop-arm64-images.tgz
@@ -110,7 +112,7 @@ out/rk3568-eflasher-debian-buster-desktop-5.10-arm64-YYYYMMDD.img
 *Note: Here we use debian-buster system as an example*  
 Clone this repository locally, then download and uncompress the [pre-built images](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher):
 ```
-git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master sd-fuse_rk3568-master
+git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master --single-branch sd-fuse_rk3568-master
 cd sd-fuse_rk3568-master
 wget http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
 tar xvzf debian-buster-desktop-arm64-images.tgz
@@ -147,7 +149,7 @@ Or build SD-to-eMMC image:
 *Note: Here we use debian-buster system as an example*  
 Clone this repository locally, then download and uncompress the [pre-built images](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher):
 ```
-git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master sd-fuse_rk3568-master
+git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master --single-branch sd-fuse_rk3568-master
 cd sd-fuse_rk3568-master
 wget http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
 tar xvzf debian-buster-desktop-arm64-images.tgz
@@ -187,7 +189,7 @@ MK_HEADERS_DEB=1 ./build-kernel.sh debian-buster-desktop-arm64
 *Note: Here we use debian-buster system as an example* 
 Clone this repository locally, then download and uncompress the [pre-built images](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher)::
 ```
-git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master sd-fuse_rk3568-master
+git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b master --single-branch sd-fuse_rk3568-master
 cd sd-fuse_rk3568-master
 wget http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
 tar xvzf debian-buster-desktop-arm64-images.tgz
