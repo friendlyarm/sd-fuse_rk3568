@@ -45,6 +45,8 @@ if [ $RAW_SIZE_MB -eq 0 ]; then
 		RAW_SIZE_MB=7800 ;;
 	debian-*)
 		RAW_SIZE_MB=7800 ;;
+	android*)
+		RAW_SIZE_MB=7800 ;;
 	friendlywrt*)
 		RAW_SIZE_MB=1500 ;;
 	eflasher)
