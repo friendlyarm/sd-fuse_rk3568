@@ -27,6 +27,7 @@ kernel*
 
 /mnt
 /vendor
+/ubuntu*
 /friendlywrt*
 /debian*
 /android*

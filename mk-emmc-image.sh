@@ -38,7 +38,7 @@ true ${SOC:=rk3568}
 true ${TARGET_OS:=${1,,}}
 
 case ${TARGET_OS} in
-buildroot* | friendlycore-focal-arm64 | debian-* | friendlywrt* | android*)
+buildroot* | friendlycore-focal-arm64 | debian-* | ubuntu-* | friendlywrt* | android*)
         ;;
 *)
         echo "Error: Unsupported target OS: ${TARGET_OS}"
