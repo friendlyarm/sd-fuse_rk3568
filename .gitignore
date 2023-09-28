@@ -36,6 +36,7 @@ kernel*
 /eflasher
 /buildroot
 /lubuntu*
+/openmediavault-*
 /*-images.tgz*
 /rootfs-*.tgz
 /*.raw*

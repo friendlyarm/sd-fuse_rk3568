@@ -18,7 +18,7 @@ set -eu
 # along with this program; if not, you can access it online at
 # http://www.gnu.org/licenses/gpl-2.0.html.
 function usage() {
-       echo "Usage: $0 <buildroot|friendlycore-focal-arm64|debian-buster-desktop-arm64|debian-bullseye-desktop-arm64|friendlywrt22|friendlywrt22-docker|friendlywrt21|friendlywrt21-docker|eflasher>"
+       echo "Usage: $0 <buildroot|friendlycore-focal-arm64|openmediavault-arm64|debian-buster-desktop-arm64|debian-bullseye-desktop-arm64|friendlywrt22|friendlywrt22-docker|friendlywrt21|friendlywrt21-docker|eflasher>"
        exit 0
 }
 
@@ -41,11 +41,13 @@ if [ $RAW_SIZE_MB -eq 0 ]; then
 	case ${TARGET_OS} in
 	buildroot*)
 		RAW_SIZE_MB=7800 ;;
-	friendlycore-focal-arm64)
+	openmediavault-*)
 		RAW_SIZE_MB=7800 ;;
 	debian-*)
 		RAW_SIZE_MB=7800 ;;
 	ubuntu-*)
+		RAW_SIZE_MB=7800 ;;
+	friendlycore-*)
 		RAW_SIZE_MB=7800 ;;
 	android*)
 		RAW_SIZE_MB=7800 ;;
@@ -62,7 +64,7 @@ if [ $# -eq 2 ]; then
 	RAW_FILE=$2
 else
 	case ${TARGET_OS} in
-	buildroot*|friendlycore-*|debian-*|ubuntu-*|android*)
+	buildroot*|friendlycore-*|openmediavault-*|debian-*|ubuntu-*|android*)
 		RAW_FILE=${SOC}-sd-${TARGET_OS%-*}-5.10-arm64-$(date +%Y%m%d).img
 		;;
 	friendlywrt22)
@@ -75,7 +77,7 @@ else
 		RAW_FILE=${SOC}-sd-friendlywrt-21.02-arm64-$(date +%Y%m%d).img
 		;;
 	friendlywrt21-docker)
-		RAW_FILE=${SOC}-sd-friendlywrt-21.02-docker-5.10-arm64-$(date +%Y%m%d).img
+		RAW_FILE=${SOC}-sd-friendlywrt-21.02-docker-arm64-$(date +%Y%m%d).img
 		;;
 	eflasher)
 		RAW_FILE=${SOC}-eflasher-$(date +%Y%m%d).img

@@ -21,6 +21,9 @@ cd sd-fuse_rk3568
 wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/friendlycore-focal-arm64-images.tgz
 tar xzf friendlycore-focal-arm64-images.tgz
 
+wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/openmediavault-arm64-images.tgz
+tar xzf openmediavault-arm64-images.tgz
+
 wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/friendlywrt22-images.tgz
 tar xzf friendlywrt22-images.tgz
 
@@ -42,8 +45,6 @@ tar xzf debian-buster-desktop-arm64-images.tgz
 wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/debian-bullseye-desktop-arm64-images.tgz
 tar xzf debian-bullseye-desktop-arm64-images.tgz
 
-./mk-sd-image.sh friendlycore-focal-arm64
-./mk-emmc-image.sh friendlycore-focal-arm64
 
 ./mk-sd-image.sh debian-buster-desktop-arm64
 ./mk-emmc-image.sh debian-buster-desktop-arm64
@@ -62,6 +63,12 @@ tar xzf debian-bullseye-desktop-arm64-images.tgz
 
 ./mk-sd-image.sh friendlywrt21-docker
 ./mk-emmc-image.sh friendlywrt21-docker
+
+./mk-sd-image.sh friendlycore-focal-arm64
+./mk-emmc-image.sh friendlycore-focal-arm64
+
+./mk-sd-image.sh openmediavault-arm64
+./mk-emmc-image.sh openmediavault-arm64
 
 ./mk-emmc-image.sh friendlycore-focal-arm64 filename=friendlycore-lite-focal-auto-eflasher.img autostart=yes
 
