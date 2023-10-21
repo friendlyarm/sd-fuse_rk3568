@@ -27,6 +27,8 @@ For other kernel versions, please switch to the related git branch.
 * debian-bullseye-minimal-arm64
 * debian-bullseye-core-arm64
 * friendlycore-focal-arm64
+* friendlywrt23
+* friendlywrt23-docker
 * friendlywrt22
 * friendlywrt22-docker
 * friendlywrt21
