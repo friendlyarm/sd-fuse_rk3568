@@ -23,7 +23,7 @@ cd sd-fuse_rk3568
 if [ -f ../../debian-buster-desktop-arm64-images.tgz ]; then
 	tar xvzf ../../debian-buster-desktop-arm64-images.tgz
 else
-	wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
+	wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/old/kernel-5.10.y/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
     tar xvzf debian-buster-desktop-arm64-images.tgz
 fi
 

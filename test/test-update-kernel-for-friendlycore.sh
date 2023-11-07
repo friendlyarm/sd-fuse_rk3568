@@ -23,7 +23,7 @@ cd sd-fuse_rk3568
 if [ -f ../../friendlycore-focal-arm64-images.tgz ]; then
 	tar xvzf ../../friendlycore-focal-arm64-images.tgz
 else
-	wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/friendlycore-focal-arm64-images.tgz
+	wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/old/kernel-5.10.y/images-for-eflasher/friendlycore-focal-arm64-images.tgz
     tar xvzf friendlycore-focal-arm64-images.tgz
 fi
 

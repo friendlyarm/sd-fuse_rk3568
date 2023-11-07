@@ -18,31 +18,31 @@ git clone ../../.git -b master sd-fuse_rk3568
 cd sd-fuse_rk3568
 
 
-wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/friendlycore-focal-arm64-images.tgz
+wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/old/kernel-5.10.y/images-for-eflasher/friendlycore-focal-arm64-images.tgz
 tar xzf friendlycore-focal-arm64-images.tgz
 
-wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/openmediavault-arm64-images.tgz
+wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/old/kernel-5.10.y/images-for-eflasher/openmediavault-arm64-images.tgz
 tar xzf openmediavault-arm64-images.tgz
 
-wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/friendlywrt22-images.tgz
+wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/old/kernel-5.10.y/images-for-eflasher/friendlywrt22-images.tgz
 tar xzf friendlywrt22-images.tgz
 
-wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/friendlywrt22-docker-images.tgz
+wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/old/kernel-5.10.y/images-for-eflasher/friendlywrt22-docker-images.tgz
 tar xzf friendlywrt22-docker-images.tgz
 
-wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/friendlywrt21-images.tgz
+wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/old/kernel-5.10.y/images-for-eflasher/friendlywrt21-images.tgz
 tar xzf friendlywrt21-images.tgz
 
-wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/friendlywrt21-docker-images.tgz
+wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/old/kernel-5.10.y/images-for-eflasher/friendlywrt21-docker-images.tgz
 tar xzf friendlywrt21-docker-images.tgz
 
-wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/emmc-flasher-images.tgz
+wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/old/kernel-5.10.y/images-for-eflasher/emmc-flasher-images.tgz
 tar xzf emmc-flasher-images.tgz
 
-wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
+wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/old/kernel-5.10.y/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
 tar xzf debian-buster-desktop-arm64-images.tgz
 
-wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/debian-bullseye-desktop-arm64-images.tgz
+wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/old/kernel-5.10.y/images-for-eflasher/debian-bullseye-desktop-arm64-images.tgz
 tar xzf debian-bullseye-desktop-arm64-images.tgz
 
 
