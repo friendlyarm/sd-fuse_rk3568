@@ -11,8 +11,9 @@ sd-fuse 提供一些工具和脚本, 用于制作SD卡固件, 具体用途如下
   
 ## 运行环境
 * 在电脑主机端使用
-* 推荐的操作系统: Ubuntu 18.04及以上64位操作系统
+* 推荐的操作系统: Ubuntu 20.04及以上64位操作系统
 * 推荐运行此脚本初始化开发环境: https://github.com/friendlyarm/build-env-on-ubuntu-bionic
+* Docker容器: https://github.com/friendlyarm/docker-cross-compiler-novnc
 
 ## 支持的内核版本
 sd-fuse 使用不同的git分支来支持不同的内核版本, 当前支持的内核版本为:
@@ -23,7 +24,7 @@ sd-fuse 使用不同的git分支来支持不同的内核版本, 当前支持的�
 
 * debian-bullseye-desktop-arm64
 * debian-bullseye-minimal-arm64
-* debian-bullseye-core-arm64
+* debian-bookworm-core-arm64
 * friendlycore-focal-arm64
 * ubuntu-focal-desktop-arm64
 * friendlywrt23
