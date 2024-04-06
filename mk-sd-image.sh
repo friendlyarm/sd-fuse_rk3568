@@ -26,11 +26,14 @@ if [ $# -eq 0 ]; then
     usage
 fi
 
+. tools/util.sh
+check_and_install_package
+
 # ----------------------------------------------------------
 # Get platform, target OS
 
 true ${SOC:=rk3568}
-true ${TARGET_OS:=${1,,}}
+true ${TARGET_OS:=$(echo ${1,,}|sed 's/\///g')}
 
 # ----------------------------------------------------------
 # Create zero file
@@ -39,6 +42,8 @@ RK_PARAMETER_TXT=$(dirname $0)/${TARGET_OS}/parameter.txt
 true ${RAW_SIZE_MB:=0}
 if [ $RAW_SIZE_MB -eq 0 ]; then
 	case ${TARGET_OS} in
+	android*)
+		RAW_SIZE_MB=7800 ;;
 	buildroot*)
 		RAW_SIZE_MB=7800 ;;
 	openmediavault-*)
@@ -48,8 +53,6 @@ if [ $RAW_SIZE_MB -eq 0 ]; then
 	ubuntu-*)
 		RAW_SIZE_MB=7800 ;;
 	friendlycore-*)
-		RAW_SIZE_MB=7800 ;;
-	android*)
 		RAW_SIZE_MB=7800 ;;
 	friendlywrt*)
 		RAW_SIZE_MB=1500 ;;
@@ -168,6 +171,14 @@ if [ "x${TARGET_OS}" = "xeflasher" ]; then
 	# Setup loop device
 	LOOP_DEVICE=$(losetup -f)
 	echo "Using device: ${LOOP_DEVICE}"
+	for i in `seq 3`; do
+		if [ -b ${LOOP_DEVICE} ]; then
+			break
+		else
+			echo "Waitting ${LOOP_DEVICE}"
+			sleep 1
+		fi
+	done
 
 	if losetup ${LOOP_DEVICE} ${RAW_FILE}; then
 		USE_KPARTX=1
@@ -186,26 +197,16 @@ if [ "x${TARGET_OS}" = "xeflasher" ]; then
 		rm -f ${RAW_FILE}
 		exit 1
 	fi
-
-	if ! command -v mkfs.exfat &> /dev/null; then
-		if [ -f /etc/os-release ]; then
-			. /etc/os-release
-			case "$VERSION_CODENAME" in
-			jammy)
-				sudo apt-get install exfatprogs
-				;;
-			*)
-				sudo apt-get install exfat-fuse exfat-utils
-				;;
-			esac
-		fi
-	fi
-	mkfs.exfat ${LOOP_DEVICE}p1 -n FriendlyARM
+	sudo mkfs.exfat ${LOOP_DEVICE}p1 -n FriendlyARM
 
 	# cleanup
 	losetup -d ${LOOP_DEVICE}
 else
-	true ${SD_UPDATE:=$(dirname $0)/tools/sd_update}
+	HOST_ARCH=
+	if uname -mpi | grep aarch64 >/dev/null; then
+	    HOST_ARCH="aarch64/"
+	fi
+	true ${SD_UPDATE:=$(dirname $0)/tools/${HOST_ARCH}sd_update}
 
 	${SD_UPDATE} -d ${RAW_FILE} -p ${RK_PARAMETER_TXT}
 	if [ $? -ne 0 ]; then
@@ -218,4 +219,3 @@ echo "---------------------------------"
 echo "RAW image successfully created (`date +%T`)."
 ls -l ${RAW_FILE}
 echo "Tip: You can compress it to save disk space."
-
