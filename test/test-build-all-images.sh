@@ -4,10 +4,7 @@ set -eu
 HTTP_SERVER=112.124.9.243
 
 # hack for me
-PCNAME=`hostname`
-if [ x"${PCNAME}" = x"tzs-i7pc" ]; then
-       HTTP_SERVER=127.0.0.1
-fi
+[ -f /etc/friendlyarm ] && source /etc/friendlyarm $(basename $(builtin cd ..; pwd))
 
 # clean
 mkdir -p tmp
@@ -16,7 +13,6 @@ sudo rm -rf tmp/*
 cd tmp
 git clone ../../.git -b master sd-fuse_rk3568
 cd sd-fuse_rk3568
-
 
 wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/old/kernel-5.10.y/images-for-eflasher/friendlycore-focal-arm64-images.tgz
 tar xzf friendlycore-focal-arm64-images.tgz
@@ -44,7 +40,6 @@ tar xzf debian-buster-desktop-arm64-images.tgz
 
 wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/old/kernel-5.10.y/images-for-eflasher/debian-bullseye-desktop-arm64-images.tgz
 tar xzf debian-bullseye-desktop-arm64-images.tgz
-
 
 ./mk-sd-image.sh debian-buster-desktop-arm64
 ./mk-emmc-image.sh debian-buster-desktop-arm64

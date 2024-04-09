@@ -15,11 +15,11 @@ sudo rm -rf tmp/*
 cd tmp
 git clone ../../.git sd-fuse_rk3568
 cd sd-fuse_rk3568
-if [ -f ../../friendlycore-focal-arm64-images.tgz ]; then
-	tar xvzf ../../friendlycore-focal-arm64-images.tgz
+if [ -f ../../debian-bullseye-desktop-arm64-images.tgz ]; then
+	tar xvzf ../../debian-bullseye-desktop-arm64-images.tgz
 else
-	wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/old/kernel-5.10.y/images-for-eflasher/friendlycore-focal-arm64-images.tgz
-    tar xvzf friendlycore-focal-arm64-images.tgz
+	wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/old/kernel-5.10.y/images-for-eflasher/debian-bullseye-desktop-arm64-images.tgz
+    tar xvzf debian-bullseye-desktop-arm64-images.tgz
 fi
 
 if [ -f ../../kernel-rk3568.tgz ]; then
@@ -30,10 +30,10 @@ fi
 
 wget http://${HTTP_SERVER}/sd-fuse/kernel-3rd-drivers.tgz
 if [ -f kernel-3rd-drivers.tgz ]; then
-    pushd out
-    tar xzf ../kernel-3rd-drivers.tgz
-    popd
+	pushd out
+	tar xzf ../kernel-3rd-drivers.tgz
+	popd
 fi
 
-KERNEL_SRC=$PWD/kernel-rk3568 ./build-kernel.sh friendlycore-focal-arm64
-sudo ./mk-sd-image.sh friendlycore-focal-arm64
+KERNEL_SRC=$PWD/kernel-rk3568 ./build-kernel.sh debian-bullseye-desktop-arm64
+sudo ./mk-sd-image.sh debian-bullseye-desktop-arm64
