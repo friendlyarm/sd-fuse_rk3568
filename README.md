@@ -11,7 +11,7 @@ This repository is a bunch of scripts to build bootable SD card images for Frien
   
 ## Requirements
 * Supports x86_64 and aarch64 platforms
-* Recommended Host OS: Ubuntu 20.04 LTS (Bionic Beaver) 64-bit or Higher
+* Recommended Host OS: Ubuntu 20.04 LTS (Focal Fossa) 64-bit or Higher. Note: Build will fail on Ubuntu Bionic since package lz4 is required
 * For x86_64 user, it is recommended to run this script to initialize the development environment: https://github.com/friendlyarm/build-env-on-ubuntu-bionic
 * Docker container: https://github.com/friendlyarm/docker-cross-compiler-novnc
 
@@ -143,10 +143,6 @@ or download the filesystem archive from the following URL and extract it:
 wget http://112.124.9.243/dvdfiles/rk3568/rootfs/rootfs-debian-bullseye-desktop-arm64.tgz
 ./tools/extract-rootfs-tar.sh rootfs-debian-bullseye-desktop-arm64.tgz
 ```
-Change something:
-```
-sudo sh -c 'echo hello > debian-bullseye-desktop-arm64/rootfs/root/welcome.txt'
-```
 Make rootfs to img:
 ```
 sudo ./build-rootfs-img.sh debian-bullseye-desktop-arm64/rootfs debian-bullseye-desktop-arm64
@@ -157,9 +153,9 @@ Use the new rootfs.img to build SD card image:
 ```
 Or build SD-to-eMMC image:
 ```
-./mk-emmc-image.sh debian-bullseye-desktop-arm64
+./mk-emmc-image.sh debian-bullseye-desktop-arm64 autostart=yes
 ```
-If the image file is too large to be packaged, you can use an environment variable to reassign the image size, for example:
+If the image path is too big to pack, you can use the RAW_SIZE_MB environment variable to set a new image size. for example, you can set it to 16GB:
 ```
 RAW_SIZE_MB=16000 ./mk-sd-image.sh debian-bullseye-desktop-arm64
 RAW_SIZE_MB=16000 ./mk-emmc-image.sh debian-bullseye-desktop-arm64
@@ -173,14 +169,13 @@ cd sd-fuse_rk3568-master
 wget http://112.124.9.243/dvdfiles/rk3568/old/kernel-5.10.y/images-for-eflasher/debian-bullseye-desktop-arm64-images.tgz
 tar xvzf debian-bullseye-desktop-arm64-images.tgz
 ```
-Download the kernel source code from github, using the environment variable KERNEL_SRC to specify the local source code directory:
+Download the kernel source code from github:
 ```
-export KERNEL_SRC=$PWD/kernel
-git clone https://github.com/friendlyarm/kernel-rockchip -b nanopi5-v5.10.y_opt --depth 1 ${KERNEL_SRC}
+git clone https://github.com/friendlyarm/kernel-rockchip -b nanopi5-v5.10.y_opt --depth 1 kernel
 ```
 Customize the kernel configuration:
 ```
-cd $KERNEL_SRC
+cd kernel
 touch .scmversion
 make ARCH=arm64 nanopi5_linux_defconfig
 make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig
@@ -189,20 +184,21 @@ cp defconfig ./arch/arm64/configs/my_defconfig                  # Save the confi
 git add ./arch/arm64/configs/my_defconfig
 cd -
 ```
-Specify the configuration of the kernel using the KCFG environment variable (KERNEL_SRC specifies the source directory), and compile the kernel with your configuration:
+To compile the kernel, use the environment variables KERNEL_SRC and KCFG to set the source code folder and the defconfig file:
 ```
-export KERNEL_SRC=$PWD/kernel
-export KCFG=my_defconfig
-./build-kernel.sh debian-bullseye-desktop-arm64
+KERNEL_SRC=kernel KCFG=my_defconfig ./build-kernel.sh debian-bullseye-desktop-arm64
 ```
 
-#### Compiling the kernel headers
+#### Compiling the kernel headers only
 Set the environment variable MK_HEADERS_DEB to 1, which will compile the kernel headers:
 ```
 MK_HEADERS_DEB=1 ./build-kernel.sh debian-bullseye-desktop-arm64
 ```
-#### Other
-* Set the environment variable BUILD_THIRD_PARTY_DRIVER to 0 will skip the compilation of third-party driver modules
+#### Environment Variables
+* KERNEL_SRC is used to specify the local kernel source code dir.
+* KCFG is used to specify the kernel defconfig (located in the arch/arm64/configs/ dir).
+* Set BUILD_THIRD_PARTY_DRIVER to 0 to skip compiling third-party driver modules
+* Set SKIP_DISTCLEAN to 1 to skip running distclean before compiling
 
 ### Compiling the u-boot
 *Note: Here we use debian-bullseye system as an example* 
@@ -215,8 +211,7 @@ tar xvzf debian-bullseye-desktop-arm64-images.tgz
 ```
 Download the u-boot source code from github that matches the OS version, the environment variable UBOOT_SRC is used to specify the local source code directory:
 ```
-export UBOOT_SRC=$PWD/uboot
-git clone https://github.com/friendlyarm/uboot-rockchip -b nanopi5-v2017.09 --depth 1 ${UBOOT_SRC}
-./build-uboot.sh debian-bullseye-desktop-arm64
+git clone https://github.com/friendlyarm/uboot-rockchip -b nanopi5-v2017.09 --depth 1 uboot
+UBOOT_SRC=uboot ./build-uboot.sh debian-bullseye-desktop-arm64
 ```
 
