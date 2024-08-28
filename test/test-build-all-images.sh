@@ -36,15 +36,15 @@ tar xzf friendlywrt21-docker-images.tgz
 wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/emmc-flasher-images.tgz
 tar xzf emmc-flasher-images.tgz
 
-wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/debian-buster-desktop-arm64-images.tgz
-tar xzf debian-buster-desktop-arm64-images.tgz
+wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/ubuntu-focal-desktop-arm64-images.tgz
+tar xzf ubuntu-focal-desktop-arm64-images.tgz
 
 wget --no-proxy http://${HTTP_SERVER}/dvdfiles/RK3568/images-for-eflasher/debian-bullseye-desktop-arm64-images.tgz
 tar xzf debian-bullseye-desktop-arm64-images.tgz
 
 
-./mk-sd-image.sh debian-buster-desktop-arm64
-./mk-emmc-image.sh debian-buster-desktop-arm64
+./mk-sd-image.sh ubuntu-focal-desktop-arm64
+./mk-emmc-image.sh ubuntu-focal-desktop-arm64
 
 ./mk-sd-image.sh debian-bullseye-desktop-arm64
 ./mk-emmc-image.sh debian-bullseye-desktop-arm64

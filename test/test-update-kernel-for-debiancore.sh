@@ -31,9 +31,9 @@ fi
 
 wget http://${HTTP_SERVER}/sd-fuse/kernel-3rd-drivers.tgz
 if [ -f kernel-3rd-drivers.tgz ]; then
-    pushd out
-    tar xzf ../kernel-3rd-drivers.tgz
-    popd
+	pushd out
+	tar xzf ../kernel-3rd-drivers.tgz
+	popd
 fi
 
 KERNEL_SRC=$PWD/kernel-rk3568 ./build-kernel.sh debian-bookworm-core-arm64

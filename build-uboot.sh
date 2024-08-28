@@ -23,29 +23,30 @@ true ${DISABLE_MKIMG:=0}
 
 UBOOT_REPO=https://github.com/friendlyarm/uboot-rockchip
 UBOOT_BRANCH=nanopi5-v2017.09
+BOARD=nanopi5
 
 TOPPATH=$PWD
 OUT=$TOPPATH/out
 if [ ! -d $OUT ]; then
-	echo "path not found: $OUT"
-	exit 1
+    echo "path not found: $OUT"
+    exit 1
 fi
 true ${uboot_src:=${OUT}/uboot-${SOC}}
 true ${UBOOT_SRC:=${uboot_src}}
 
 function usage() {
-       echo "Usage: $0 <buildroot|friendlycore-focal-arm64|openmediavault-arm64|debian-buster-desktop-arm64|debian-bullseye-desktop-arm64|friendlywrt23|friendlywrt23-docker|friendlywrt22|friendlywrt22-docker|friendlywrt21|friendlywrt21-docker>"
-       echo "# example:"
-       echo "# clone uboot source from github:"
-       echo "    git clone ${UBOOT_REPO} --depth 1 -b ${UBOOT_BRANCH} ${UBOOT_SRC}"
-       echo "# or clone your local repo:"
-       echo "    git clone git@192.168.1.2:/path/to/uboot.git --depth 1 -b ${UBOOT_BRANCH} ${UBOOT_SRC}"
-       echo "# then"
-       echo "    ./build-uboot.sh debian-buster-desktop-arm64 "
-       echo "    ./mk-emmc-image.sh debian-buster-desktop-arm64 "
-       echo "# also can do:"
-       echo "	UBOOT_SRC=~/myuboot ./build-uboot.sh debian-buster-desktop-arm64"
-       exit 0
+    echo "Usage: $0 <img dir>"
+    echo "# example:"
+    echo "# clone uboot source from github:"
+    echo "    git clone ${UBOOT_REPO} --depth 1 -b ${UBOOT_BRANCH} ${UBOOT_SRC}"
+    echo "# or clone your local repo:"
+    echo "    git clone git@192.168.1.2:/path/to/uboot.git --depth 1 -b ${UBOOT_BRANCH} ${UBOOT_SRC}"
+    echo "# then"
+    echo "    ./build-uboot.sh debian-bookworm-core-arm64 "
+    echo "    ./mk-emmc-image.sh debian-bookworm-core-arm64 "
+    echo "# also can do:"
+    echo "	UBOOT_SRC=~/myuboot ./build-uboot.sh debian-bookworm-core-arm64"
+    exit 0
 }
 
 if [ $# -ne 1 ]; then
@@ -56,7 +57,7 @@ case "$(uname -mpi)" in
 x86_64*)
     ;;
 *)
-    echo "Error: uboot compilation is only supported on x86_64 host."
+    echo "Error: u-boot cross compilation only support on a x86_64 host."
     exit 1
     ;;
 esac
@@ -67,12 +68,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 check_and_install_package
-if ! [ -x "$(command -v python2)" ]; then
-    sudo apt install python2
-fi
-if ! [ -x "$(command -v python)" ]; then
-    (cd /usr/bin/ && sudo ln -s python2 python)
-fi
+
 # get include path for this python version
 INCLUDE_PY=$(python -c "import sysconfig as s; print(s.get_config_vars()['INCLUDEPY'])")
 if [ ! -f "${INCLUDE_PY}/Python.h" ]; then
@@ -96,7 +92,7 @@ download_img() {
     if [ -f "${RKPARAM}" ]; then
         echo ""
     else
-	ROMFILE=`./tools/get_pkg_filename.sh ${1}`
+    ROMFILE=`./tools/get_pkg_filename.sh ${1}`
         cat << EOF
 Warn: Image not found for ${1}
 ----------------
@@ -125,38 +121,21 @@ EOF
 }
 
 if [ ! -d ${UBOOT_SRC} ]; then
-	git clone ${UBOOT_REPO} --depth 1 -b ${UBOOT_BRANCH} ${UBOOT_SRC}
+    git clone ${UBOOT_REPO} --depth 1 -b ${UBOOT_BRANCH} ${UBOOT_SRC}
 fi
 if [ ! -d ${UBOOT_SRC}/../rkbin ]; then
     (cd ${UBOOT_SRC}/../ && {
-        git clone https://github.com/friendlyarm/rkbin -b nanopi5
+        git clone https://github.com/friendlyarm/rkbin -b ${BOARD}
     })
 fi
 
 cd ${UBOOT_SRC}
-
-# {{ FIXME: try to compile on aarch64 host but it doesn't work
-# UBOOT_DEFCONFIG=nanopi5_defconfig
-# case "$(uname -mpi)" in
-# aarch64*)
-#     make ${UBOOT_DEFCONFIG} ARCH=arm64
-#     make tools
-#     (cd tools && {
-#         cp bmp2gray16 boot_merger loaderimage mkimage \
-#             resource_tool trust_merger ../../rkbin/tools
-#         cp ${TOPPATH}/tools/aarch64/mkkrnlimg \
-#             ${TOPPATH}/tools/aarch64/resource_tool ../../rkbin/tools
-#     })
-#     ;;
-# esac
-# }}
-
 make distclean
-./make.sh nanopi5
+./make.sh ${BOARD}
 
 if [ $? -ne 0 ]; then
-	echo "failed to build uboot."
-	exit 1
+    echo "failed to build uboot."
+    exit 1
 fi
 
 if [ x"$DISABLE_MKIMG" = x"1" ]; then
