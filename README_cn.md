@@ -27,6 +27,8 @@ sd-fuse 使用不同的git分支来支持不同的内核版本, 当前支持的�
 * debian-bookworm-core-arm64
 * friendlycore-focal-arm64
 * ubuntu-focal-desktop-arm64
+* friendlywrt24
+* friendlywrt24-docker
 * friendlywrt23
 * friendlywrt23-docker
 * friendlywrt21
