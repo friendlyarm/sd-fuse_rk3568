@@ -24,18 +24,22 @@ For other kernel versions, please switch to the related git branch.
 *Notes: The OS name is the same as the directory name, it is written in the script so it cannot be renamed.*
 
 * debian-bullseye-desktop-arm64
+* ubuntu-noble-core-arm64
 * debian-bullseye-minimal-arm64
 * debian-bookworm-core-arm64
 * friendlycore-focal-arm64
 * ubuntu-focal-desktop-arm64
+* buildroot
 * friendlywrt24
 * friendlywrt24-docker
 * friendlywrt23
 * friendlywrt23-docker
 * friendlywrt21
 * friendlywrt21-docker
-* openmediavault-arm64
+* proxmox-arm64
+* eflasher
 * alpine-linux-arm64
+* openmediavault-arm64
 
   
 To build an SD card image for debian-bullseye, for example like this:
