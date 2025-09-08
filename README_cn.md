@@ -38,7 +38,6 @@ sd-fuse 使用不同的git分支来支持不同的内核版本, 当前支持的�
 * proxmox-arm64
 * eflasher
 * alpine-linux-arm64
-* arch-linux-arm64
 * openmediavault-arm64
 
   
@@ -203,7 +202,11 @@ git clone https://github.com/friendlyarm/kernel-rockchip -b nanopi6-v6.1.y --dep
 ```
 cd kernel
 touch .scmversion
-make ARCH=arm64 nanopi5_linux_defconfig
+
+make ARCH=arm64 nanopi5_linux_defconfig kvm.config
+# Optionally, load configuration for FriendlyWrt
+# make ARCH=arm64 nanopi5_linux_defconfig kvm.config friendlywrt.config
+
 make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig     # 根据需要改动配置
 make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- savedefconfig
 cp defconfig ./arch/arm64/configs/my_defconfig                  # 保存配置 my_defconfig

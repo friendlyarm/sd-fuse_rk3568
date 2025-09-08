@@ -39,7 +39,6 @@ For other kernel versions, please switch to the related git branch.
 * proxmox-arm64
 * eflasher
 * alpine-linux-arm64
-* arch-linux-arm64
 * openmediavault-arm64
 
   
@@ -205,7 +204,11 @@ Customize the kernel configuration:
 ```
 cd kernel
 touch .scmversion
-make ARCH=arm64 nanopi5_linux_defconfig
+
+make ARCH=arm64 nanopi5_linux_defconfig kvm.config
+# Optionally, load configuration for FriendlyWrt
+# make ARCH=arm64 nanopi5_linux_defconfig kvm.config friendlywrt.config
+
 make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig
 make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- savedefconfig
 cp defconfig ./arch/arm64/configs/my_defconfig                  # Save the configuration as my_defconfig
