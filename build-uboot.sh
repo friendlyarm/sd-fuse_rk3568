@@ -42,10 +42,10 @@ function usage() {
     echo "# or clone your local repo:"
     echo "    git clone git@192.168.1.2:/path/to/uboot.git --depth 1 -b ${UBOOT_BRANCH} ${UBOOT_SRC}"
     echo "# then"
-    echo "    ./build-uboot.sh debian-bookworm-core-arm64 "
-    echo "    ./mk-emmc-image.sh debian-bookworm-core-arm64 "
+    echo "    ./build-uboot.sh debian-trixie-core-arm64 "
+    echo "    ./mk-emmc-image.sh debian-trixie-core-arm64 "
     echo "# also can do:"
-    echo "	UBOOT_SRC=~/myuboot ./build-uboot.sh debian-bookworm-core-arm64"
+    echo "	UBOOT_SRC=~/myuboot ./build-uboot.sh debian-trixie-core-arm64"
     exit 0
 }
 
