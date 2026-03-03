@@ -27,7 +27,8 @@ true ${KERNEL_LOGO:=}
 true ${MK_HEADERS_DEB:=0}
 true ${SKIP_DISTCLEAN:=0}
 true ${BUILD_THIRD_PARTY_DRIVER:=1}
-true ${KCFG:=nanopi5_linux_defconfig kvm.config}
+DEFAULT_KCFG="nanopi5_linux_defconfig kvm.config"
+true ${KCFG:=${DEFAULT_KCFG}}
 true ${TARGET_OS:=$(echo ${1,,}|sed 's/\///g')}
 
 KERNEL_REPO=https://github.com/friendlyarm/kernel-rockchip
@@ -46,6 +47,14 @@ aarch64*)
     echo "Error: Cannot build arm64 arch on $(uname -mpi) host."
     ;;
 esac
+
+if [ "${KCFG}" = "${DEFAULT_KCFG}" ]; then
+    case ${TARGET_OS} in
+    ubuntu-noble-lxqt-x11-desktop-arm64)
+        KCFG="${KCFG} panfrost.config"
+        ;;
+    esac
+fi
 
 declare -a KERNEL_3RD_DRIVERS=()
 declare -a KERNEL_3RD_DRIVER_BRANCHES=()
