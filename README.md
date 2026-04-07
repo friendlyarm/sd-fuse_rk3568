@@ -32,14 +32,14 @@ For other kernel versions, please switch to the related git branch.
 * buildroot
 * friendlywrt24
 * friendlywrt24-docker
-* friendlywrt23
-* friendlywrt23-docker
-* friendlywrt21
-* friendlywrt21-docker
+* friendlywrt25
+* friendlywrt25-docker
 * proxmox-arm64
 * eflasher
 * alpine-linux-arm64
 * openmediavault-arm64
+* ubuntu-noble-lxqt-x11-desktop-arm64
+* debian-bookworm-lxqt-x11-desktop-arm64
 
   
 To build an SD card image for debian-bullseye, for example like this:
