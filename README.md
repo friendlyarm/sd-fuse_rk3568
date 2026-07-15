@@ -51,10 +51,10 @@ To build an SD card image for debian-bullseye, for example like this:
 The following files may be required to build SD card image:
 * kernel source code: In the directory "07_Source codes" of [NetDrive](https://download.friendlyelec.com/rk3568), or download from [Github](https://github.com/friendlyarm/kernel-rockchip), the branch name is nanopi6-v6.1.y
 * uboot source code: In the directory "07_Source codes" of [NetDrive](https://download.friendlyelec.com/rk3568), or download from [Github](https://github.com/friendlyarm/uboot-rockchip), the branch name is nanopi5-v2017.09
-* pre-built partition image: In the directory "03_Partition image files" of [NetDrive](https://download.friendlyelec.com/rk3568), or download from [HTTP server](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher)
-* compressed root file system tar ball: In the directory "06_File systems" of [NetDrive](https://download.friendlyelec.com/rk3568), or download from [HTTP server](http://112.124.9.243/dvdfiles/rk3568/rootfs)
+* pre-built partition image: In the directory "03_Partition image files" of [NetDrive](https://download.friendlyelec.com/rk3568), or download from [server](https://downloads.friendlyelec.com/os-images/rk3568/images)
+* compressed root file system tar ball: In the directory "06_File systems" of [NetDrive](https://download.friendlyelec.com/rk3568), or download from [server](https://downloads.friendlyelec.com/rootfs/rk3568)
   
-If the files are not prepared in advance, the script will automatically download the required files, but the speed may be slower due to the bandwidth of the http server.
+If the files are not prepared in advance, the script will download the latest version from the server.
 
 ## Script Functions
 * fusing.sh: Flash the image to SD card
@@ -68,11 +68,11 @@ If the files are not prepared in advance, the script will automatically download
 ## Usage
 ### Build your own SD card image
 *Note: Here we use debian-bullseye system as an example*  
-Clone this repository locally, then download and uncompress the [pre-built images](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher), due to the bandwidth of the http server, we recommend downloading the file from the [NetDrive](https://download.friendlyelec.com/rk3568):
+Clone this repository locally, then download and uncompress the [pre-built images](https://downloads.friendlyelec.com/os-images/rk3568/images):
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b kernel-6.1.y --single-branch sd-fuse_rk3568-kernel6.1
 cd sd-fuse_rk3568-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher/debian-bullseye-desktop-arm64-images.tgz
+wget https://downloads.friendlyelec.com/os-images/rk3568/images/debian-bullseye-desktop-arm64-images.tgz
 tar xvzf debian-bullseye-desktop-arm64-images.tgz
 ```
 After decompressing, you will get a directory named debian-bullseye-desktop-arm64, you can change the files in the directory as needed, for example, replace rootfs.img with your own modified version, or your own compiled kernel and uboot, finally, flash the image to the SD card by entering the following command (The below steps assume your SD card is device /dev/sdX):
@@ -101,13 +101,13 @@ The benefits of disabling OverlayFS are as follows:
 
 ### Build your own SD-to-eMMC Image
 *Note: Here we use debian-bullseye system as an example*  
-Clone this repository locally, then download and uncompress the [pre-built images](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher), here you need to download the debian-bullseye and eflasher [pre-built images](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher):
+Clone this repository locally, then download and uncompress the [pre-built images](https://downloads.friendlyelec.com/os-images/rk3568/images), here you need to download the debian-bullseye and eflasher [pre-built images](https://downloads.friendlyelec.com/os-images/rk3568/images):
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b kernel-6.1.y --single-branch sd-fuse_rk3568-kernel6.1
 cd sd-fuse_rk3568-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher/debian-bullseye-desktop-arm64-images.tgz
+wget https://downloads.friendlyelec.com/os-images/rk3568/images/debian-bullseye-desktop-arm64-images.tgz
 tar xvzf debian-bullseye-desktop-arm64-images.tgz
-wget http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher/emmc-flasher-images.tgz
+wget https://downloads.friendlyelec.com/os-images/rk3568/images/emmc-flasher-images.tgz
 tar xvzf emmc-flasher-images.tgz
 ```
 Then use the following command to build the SD-to-eMMC image, the autostart=yes parameter means it will automatically enter the flash process when booting:
@@ -132,11 +132,11 @@ tar --warning=no-file-changed -cvpzf /rootfs.tar.gz \
 ```
 #### Making a bootable SD card from a root filesystem
 *Note: Here we use debian-bullseye system as an example*  
-Clone this repository locally, then download and uncompress the [pre-built images](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher):
+Clone this repository locally, then download and uncompress the [pre-built images](https://downloads.friendlyelec.com/os-images/rk3568/images):
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b kernel-6.1.y --single-branch sd-fuse_rk3568-kernel6.1
 cd sd-fuse_rk3568-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher/debian-bullseye-desktop-arm64-images.tgz
+wget https://downloads.friendlyelec.com/os-images/rk3568/images/debian-bullseye-desktop-arm64-images.tgz
 tar xvzf debian-bullseye-desktop-arm64-images.tgz
 ```
 Extract the rootfs.tar.gz exported in the previous section, the tar command requires root privileges, so you need put sudo in front of the command:
@@ -146,7 +146,9 @@ mkdir debian-bullseye-desktop-arm64/rootfs
 ```
 or download the filesystem archive from the following URL and extract it:
 ```
-wget http://112.124.9.243/dvdfiles/rk3568/rootfs/rootfs-debian-bullseye-desktop-arm64.tgz
+wget https://downloads.friendlyelec.com/rootfs/rk3568/rootfs-debian-bullseye-desktop-arm64.tgz
+wget https://downloads.friendlyelec.com/rootfs/rk3568/rootfs-debian-bullseye-desktop-arm64.tgz.sha256
+sha256sum -c rootfs-debian-bullseye-desktop-arm64.tgz.sha256
 ./tools/extract-rootfs-tar.sh rootfs-debian-bullseye-desktop-arm64.tgz
 ```
 Make rootfs to img:
@@ -178,9 +180,11 @@ The following command will create an SD card image with BTRFS root filesystem:
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b kernel-6.1.y --single-branch sd-fuse_rk3568-kernel6.1
 cd sd-fuse_rk3568-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher/debian-bullseye-desktop-arm64-images.tgz
+wget https://downloads.friendlyelec.com/os-images/rk3568/images/debian-bullseye-desktop-arm64-images.tgz
 tar xvzf debian-bullseye-desktop-arm64-images.tgz
-wget http://112.124.9.243/dvdfiles/rk3568/rootfs/rootfs-debian-bullseye-desktop-arm64.tgz
+wget https://downloads.friendlyelec.com/rootfs/rk3568/rootfs-debian-bullseye-desktop-arm64.tgz
+wget https://downloads.friendlyelec.com/rootfs/rk3568/rootfs-debian-bullseye-desktop-arm64.tgz.sha256
+sha256sum -c rootfs-debian-bullseye-desktop-arm64.tgz.sha256
 ./tools/extract-rootfs-tar.sh rootfs-debian-bullseye-desktop-arm64.tgz
 sudo -E FS_TYPE=btrfs ./build-rootfs-img.sh debian-bullseye-desktop-arm64/rootfs \
     debian-bullseye-desktop-arm64
@@ -189,11 +193,11 @@ sudo -E FS_TYPE=btrfs ./build-rootfs-img.sh debian-bullseye-desktop-arm64/rootfs
 
 ### Compiling the Kernel
 *Note: Here we use debian-bullseye system as an example*  
-Clone this repository locally, then download and uncompress the [pre-built images](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher):
+Clone this repository locally, then download and uncompress the [pre-built images](https://downloads.friendlyelec.com/os-images/rk3568/images):
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b kernel-6.1.y --single-branch sd-fuse_rk3568-kernel6.1
 cd sd-fuse_rk3568-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher/debian-bullseye-desktop-arm64-images.tgz
+wget https://downloads.friendlyelec.com/os-images/rk3568/images/debian-bullseye-desktop-arm64-images.tgz
 tar xvzf debian-bullseye-desktop-arm64-images.tgz
 ```
 Download the kernel source code from github:
@@ -233,11 +237,11 @@ MK_HEADERS_DEB=1 ./build-kernel.sh debian-bullseye-desktop-arm64
 
 ### Compiling the u-boot
 *Note: Here we use debian-bullseye system as an example* 
-Clone this repository locally, then download and uncompress the [pre-built images](http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher):
+Clone this repository locally, then download and uncompress the [pre-built images](https://downloads.friendlyelec.com/os-images/rk3568/images):
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3568 -b kernel-6.1.y --single-branch sd-fuse_rk3568-kernel6.1
 cd sd-fuse_rk3568-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3568/images-for-eflasher/debian-bullseye-desktop-arm64-images.tgz
+wget https://downloads.friendlyelec.com/os-images/rk3568/images/debian-bullseye-desktop-arm64-images.tgz
 tar xvzf debian-bullseye-desktop-arm64-images.tgz
 ```
 Download the u-boot source code from github that matches the OS version, the environment variable UBOOT_SRC is used to specify the local source code directory:
@@ -245,6 +249,13 @@ Download the u-boot source code from github that matches the OS version, the env
 git clone https://github.com/friendlyarm/uboot-rockchip -b nanopi5-v2017.09 --depth 1 uboot
 UBOOT_SRC=uboot ./build-uboot.sh debian-bullseye-desktop-arm64
 ```
+### Non-Interactive Mode (SDFUSE_NONINTERACTIVE)
+Set `SDFUSE_NONINTERACTIVE=y` to skip prompts before installing packages and downloading missing image files. Example:
+```
+export SDFUSE_NONINTERACTIVE=y
+./mk-sd-image.sh debian-bullseye-desktop-arm64
+```
+
 ### Common Issues and Solutions
 * Unable to boot after creating rootfs (Solution: The file permissions in the file system might be corrupted. Make sure to use the tools/extract-rootfs-tar.sh script to extract rootfs, and use the -cpzf options with the tar command for packaging.)
 * Process exits during creation (Solution: Ensure the machine has sufficient memory.)
